@@ -1,6 +1,6 @@
 
-let string;
 let Caminhos = [];
+let timer;
 
 // escrever dados no arquivo csv + como pegar tempo...
 
@@ -58,12 +58,11 @@ function main(){
     let string = arqTeste[i][0];
     let resultado;
     let estadoFinal;
-    let timer = 0; let interval = 0;
+    let interval;
+    timer = 0;
     Caminhos = [];
 
-    setInterval(() =>{
-      timer += 1;
-    }, 10);
+    interval = setInterval(incrementaTimer, 10);
 
     Caminhos[0] = qi;
 
@@ -77,13 +76,15 @@ function main(){
       resultado = 0;
     }
 
-    interval = timer;
-    timer = clearInterval(timer)
+    clearInterval(interval);
 
-    //EscreverResultados(arqTeste[i][0], arqTeste[i][1], resultado, interval);
+    //EscreverResultados(arqTeste[i][0], arqTeste[i][1], resultado, timer);
   }
 }
 
+function incrementaTimer(){
+  timer = timer + 1;
+}
 
 // ------------------- Definir caminhos do Automato ------------------------ //
 
@@ -140,15 +141,14 @@ function ehFinal(estado){
 }
 
 function programa(q, string){
-  console.log(q);
   if(string.length === 0){
-    return q; // caso exista um caracter desconhecido ou acabar a string
+    return q; 
   }
   return programa(caminhos(string[0], Caminhos.length), string.substring(1));
 }
 
 function caminhos(letra, qtdEstados){
-  if(letra === ' '){
+  if(letra !== ' '){
     for(let i = 0; i < matrizDelta.length; i++){
       for(let j = 0; j < qtdEstados; j++){
         if(matrizDelta[i][0] === Caminhos[j]){
@@ -162,7 +162,7 @@ function caminhos(letra, qtdEstados){
     for(let i = 0; i < qtdEstados; i++)
       Caminhos[i] = -1;
   }
-  
+
   return Caminhos;
 }
 
